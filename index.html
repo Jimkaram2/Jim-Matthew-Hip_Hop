@@ -8,21 +8,27 @@
   <style>
     /* Global Styles */
     *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body { margin: 0; font-family: 'Roboto', sans-serif; background: #f5f5f5; color: #222; line-height: 1.6; }
     a { color: #c00; text-decoration: none; }
     img { max-width: 100%; height: auto; display: block; }
 
     /* Header & Nav */
-    header { background: #000; color: #fff; padding: 2rem 1rem; text-align: center; }
+    header { background: #000; color: #fff; padding: 2rem 1rem; text-align: center; position: sticky; top: 0; z-index: 1000; }
     header h1 { margin: 0; font-size: 2rem; }
     nav { margin-top: 1rem; }
-    nav a { margin: 0 .5rem; font-weight: bold; }
+    nav a { margin: 0 .5rem; font-weight: bold; transition: color 0.3s; }
+    nav a:hover { color: #f90; }
 
     /* Main Layout */
     main { padding: 2rem 1rem; max-width: 800px; margin: 0 auto; }
     section { margin-bottom: 3rem; background: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     section h2 { margin-top: 0; font-size: 1.5rem; color: #c00; }
     .quote { font-style: italic; margin: 1rem 0; padding-left: 1rem; border-left: 4px solid #c00; }
+
+    /* Reveal Animation */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+    .reveal.active { opacity: 1; transform: translateY(0); }
 
     /* Themes Grid */
     .themes { display: grid; gap: 1.5rem; grid-template-columns: 1fr; }
@@ -45,7 +51,7 @@
 
   <main>
     <!-- Artist Spotlight -->
-    <section id="spotlight">
+    <section id="spotlight" class="reveal">
       <h2>Artist Spotlight</h2>
       <img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQPzQKAwHxH6K0rdLCY9VrwF3Ww6g0tFK52TF8SsUrcR455AJPb" alt="N.W.A Group Photo">
       <p>Emerging from the streets of Compton, California, in 1987, N.W.A (Niggaz Wit Attitudes) comprised five groundbreaking artists: Eazy-E, Dr. Dre, Ice Cube, MC Ren, and DJ Yella. United by a shared vision, they broke away from party rap norms to amplify the voices of disenfranchised Black youth.</p>
@@ -55,7 +61,7 @@
     </section>
 
     <!-- Themes -->
-    <section id="themes">
+    <section id="themes" class="reveal">
       <h2>Themes Explored</h2>
       <div class="themes">
         <div>
@@ -79,7 +85,7 @@
     </section>
 
     <!-- Social & Cultural Connections -->
-    <section id="connections">
+    <section id="connections" class="reveal">
       <h2>Social & Cultural Connections</h2>
       <p>In the late 1980s and early 1990s, Los Angeles was rife with tension over police violence, economic disenfranchisement, and racial segregation. N.W.A’s firsthand accounts on tracks like “F**k tha Police” echoed the anger and frustration felt by Black communities nationwide.</p>
       <p>During the 1992 Los Angeles Riots, their music scored the background of civil unrest, becoming both a soundtrack and a catalyst for discussion on systemic oppression. The group’s graphic depiction of police misconduct led the FBI to send warnings to Ruthless Records—an unprecedented clash between artists and federal authorities.</p>
@@ -88,7 +94,7 @@
     </section>
 
     <!-- Personal Reflection -->
-    <section id="reflection">
+    <section id="reflection" class="reveal">
       <h2>Personal Reflection</h2>
       <p>Discovering N.W.A’s journey has reshaped how we view music as activism. Their courage in speaking truth to power reminds us that art can be a radical form of protest. In an era where social media amplifies voices, their model of bold storytelling feels more relevant than ever.</p>
       <p>As modern movements like Black Lives Matter harness digital platforms, we see direct parallels: raising awareness, mobilizing communities, and demanding accountability. N.W.A’s unapologetic narratives laid the groundwork for using creative mediums to challenge injustice.</p>
@@ -99,5 +105,21 @@
   <footer>
     <p>&copy; 2025 Hip Hop Project</p>
   </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const sections = document.querySelectorAll('.reveal');
+      const observerOptions = { threshold: 0.1 };
+      const revealOnScroll = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+      sections.forEach(section => revealOnScroll.observe(section));
+    });
+  </script>
 </body>
 </html>
